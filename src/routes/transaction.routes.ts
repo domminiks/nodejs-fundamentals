@@ -6,9 +6,6 @@ import CreateTransactionService from '../services/CreateTransactionService';
 const transactionRouter = Router();
 
 const transactionsRepository = new TransactionsRepository();
-const createTransactionService = new CreateTransactionService(
-  transactionsRepository,
-);
 
 transactionRouter.get('/', (request, response) => {
   try {
@@ -23,9 +20,13 @@ transactionRouter.get('/', (request, response) => {
 transactionRouter.post('/', (request, response) => {
   try {
     const { title, value, type } = request.body;
+    const absValue = Math.abs(value);
+    const createTransactionService = new CreateTransactionService(
+      transactionsRepository,
+    );
     const transaction = createTransactionService.execute({
       title,
-      value,
+      value: absValue,
       type,
     });
     return response.json(transaction);
