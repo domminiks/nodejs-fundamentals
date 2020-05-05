@@ -28,9 +28,9 @@ class TransactionsRepository {
     const transaction = new Transaction({ title, value, type });
     this.transactions.push(transaction);
     if (type === 'income') {
-      this.balance.income += Math.abs(value);
+      this.balance.income += value;
     } else {
-      this.balance.outcome += Math.abs(value);
+      this.balance.outcome += value;
     }
     this.balance.total += type === 'income' ? value : -value;
     return transaction;
