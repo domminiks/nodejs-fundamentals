@@ -9,8 +9,8 @@ class CreateTransactionService {
   }
 
   public execute({ title, value, type }: Omit<Transaction, 'id'>): Transaction {
-    if (type !== 'income' && type !== 'outcome') {
-      throw Error(
+    if (!['income', 'outcome'].includes(type)) {
+      throw new Error(
         "Invalid 'type' for request: should be 'income' or 'outcome'.",
       );
     }
@@ -18,7 +18,7 @@ class CreateTransactionService {
       value > this.transactionsRepository.getBalance().total &&
       type === 'outcome'
     ) {
-      throw Error('Insufficient balance to complete operation.');
+      throw new Error('Insufficient balance to complete operation.');
     }
     const transaction = this.transactionsRepository.create({
       title,
